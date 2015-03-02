@@ -1,0 +1,200 @@
+
+  <link rel="import" href="../../bower_components/core-ajax/core-ajax.html">
+  <link href="../../bower_components/core-animated-pages/core-animated-pages.html" rel="import">
+  <link href="../../bower_components/core-image/core-image.html" rel="import">
+  <link href="../../bower_components/core-media-query/core-media-query.html" rel="import">  
+  <link href="../../bower_components/core-scroll-header-panel/core-scroll-header-panel.html" rel="import">
+  <link href="../../bower_components/core-icon-button/core-icon-button.html" rel="import">
+  <link rel="import" href="../../bower_components/core-toolbar/core-toolbar.html">
+
+  <polymer-element name="main-content" attributes="query">
+  <template>
+    <style>
+      .sp-hide{display: none;}
+      .chip-container {
+        position: absolute;
+        top: 10px;
+        right: 0;
+        left: 0;
+        text-align: center;
+      }
+
+      .chip {
+        display: inline-block;
+        position: relative;
+        border-radius: 3px;
+        margin: 4px;
+        overflow: hidden;
+        text-align: start;
+        background-color: #fff;
+        box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.16);
+      }
+      .chip-half{
+        width: 47%;
+      }
+
+      .chip-top {
+        width: 296px;
+        height: 200px;
+        background-size: 100%;
+        background-repeat: no-repeat;
+      }
+
+      .chip-bottom {
+        padding: 8px;
+        line-height: 1.5;
+        max-width: 280px;
+      }
+
+      .chip-album-title {
+        font-weight: bold;
+      }
+
+      #details {
+        padding: 10px 10% 0;
+      }
+
+      .card {
+        margin-bottom: 40px;
+        border-radius: 3px;
+        text-align: start;
+        overflow: hidden;
+        background: #fff;
+        box-shadow: 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+      }
+
+      .card-left {
+        max-width: 300px;
+        width: 40%;
+      }
+      .card-full{
+        max-width: 100%;
+        width: 100%;
+        min-height: 200px;
+      }
+
+      .card-right {
+        padding: 24px;
+      }
+
+      .card-icon {
+        border-radius: 50%;
+        width: 60px;
+        height: 60px;
+        margin-right: 16px;
+      }
+
+      .card-album-title {
+        font-size: 2em;
+      }
+      .select {
+        display:block;
+        padding:20px 20px;
+      }
+      .select > button{
+        display: inline-block;
+        height: 40px;
+        font-size: 16px;
+        line-height: 1.2;
+        width: 49%;
+        vertical-align: top;
+      }
+      .main{
+        height: 100%;
+      }
+      .header{
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: bottom;
+        color: #f1f1f1;
+      }
+      .title{
+        background: rgba(0, 0, 0, 0.15);
+        -webkit-box-shadow: 0 -50px 100px 71px rgba(0, 0, 0, 0.15);
+        -moz-box-shadow: 0 -50px 100px 71px rgba(0, 0, 0, 0.15);
+        -ms-box-shadow: 0 -50px 100px 71px rgba(0, 0, 0, 0.15);
+        -o-box-shadow: 0 -50px 100px 71px rgba(0, 0, 0, 0.15);
+        box-shadow: 0 -50px 100px 71px rgba(0, 0, 0, 0.15);
+        text-shadow: 0px 0px 10px #000;
+        font-size: 30px;
+        position: absolute;
+        bottom: 20px;
+      }
+    </style>
+  <core-ajax url="http://2015.moriyamahotaru.com/category/{{query}}/json/" handleAs="json" auto response="{{items}}"></core-ajax>
+  <core-media-query query="max-width: 640px" queryMatches="{{phoneScreen}}"></core-media-query>
+  <core-media-query query="max-width: 1000px" queryMatches="{{largeScreen}}"></core-media-query>
+  <core-scroll-header-panel condenses fix condensedHeaderHeight="40px" class="greens main">
+  <core-toolbar class="tall header" style="background-image:url({{query=='attractions'?items[2]['schema:image']:items[0]['schema:image']}});">
+      <div class="bottom title" style="-webkit-transform: scale(1) translateZ(0px); transform: scale(1) translateZ(0px);">
+      <core-icon-button icon="menu" onclick="document.querySelector('core-drawer-panel').togglePanel();" id="drawer-toggle" class="{{phoneScreen?'':'sp-hide'}}"></core-icon-button>
+      {{queryName}}
+      </div>
+    </core-toolbar>
+
+    <core-animated-pages selected="{{page}}" transitions="hero-transition" on-core-animated-pages-transition-end="{{complete}}">
+
+      <section>
+
+        <div class="chip-container" hero-p on-tap="{{transition}}" >
+          <div horizontal layout wrap around-justified>
+
+          <template repeat="{{item in items}}">
+
+            <div class="chip {{phoneScreen?'chip-half':''}}" hero-id="{{item['schema:serialNumber']}}" hero?="{{selectedAlbum === item }}" self-stretch>
+              <div class="chip-top" style="background-image:url({{item['schema:image']}});" hero-id="{{item['schema:serialNumber']}}" hero?="{{selectedAlbum === item}}"></div>
+              <div class="chip-bottom">
+                <div class="chip-album-title">{{item["schema:name"]}}</div>
+              </div>
+            </div>
+          </template>
+          </div>
+        </div>
+      </section>
+
+      <section id="details">
+        <div class="card" layout vertical hero-id="{{selectedAlbum['schema:serialNumber']}}" hero>
+          <div layout vertical?="{{largeScreen}}" horizontal?="{{!largeScreen}}" on-tap="{{transition}}">
+            <core-image class="{{largeScreen?'card-full':'card-left'}}" src="{{selectedAlbum['schema:image']}}" hero sizing="cover"></core-image>
+            <div class="card-right" flex?="{{!largeScreen}}">
+              <div layout horizontal center>
+                <div flex>
+                  <div class="card-album-title">{{selectedAlbum["schema:name"]}}</div>
+                </div>
+              </div>
+              <div class="card-album-artist" style="margin-top:20px">
+                <div>{{selectedAlbum["schema:description"]}}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+    </core-animated-pages>
+  </core-scroll-header-panel>
+
+  </template>
+  <script>
+
+    Polymer('main-content', {
+
+      page: 0,
+      query: "watersides",
+      queryName:"守山水辺百選",
+
+      selectedAlbum: null,
+      rand : Math.floor( Math.random() * 10 ),
+
+      transition: function(e) {
+        if (this.page === 0 && e.target.templateInstance.model.item) {
+          this.selectedAlbum = e.target.templateInstance.model.item;
+          this.page = 1;
+        } else {
+          this.page = 0;
+        }
+      }
+    });
+
+  </script>
+  </polymer-element>

@@ -1,0 +1,63 @@
+
+<!--
+    @license
+    Copyright (c) 2014 The Polymer Project Authors. All rights reserved.
+    This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+    The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+    The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+    Code distributed by Google as part of the polymer project is also
+    subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+<!doctype html>
+<html>
+<head>
+  <title>守山パーク＆ウォークなび</title>
+  <meta name="viewport" content="width=device-width, user-scalable=no">
+
+  <script src="bower_components/webcomponentsjs/webcomponents.js"></script>
+  <link rel="import" href="./elements/IOD/iod-head.html">
+  <link rel="import" href="bower_components/core-drawer-panel/core-drawer-panel.html">
+  <link rel="import" href="./elements/IOD/iod01.html">
+
+  <style>
+    body {
+      font-family: 'Roboto 2', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      margin: 0;
+      background: #f1f1f1;
+    }
+
+    html, body {
+      height: 100%;
+    }
+
+    body {
+      color: #333;
+    }
+    core-drawer-panel{
+      z-index: 1;
+    }
+    #main{
+      overflow: scroll;
+    }
+    #drawer{
+      background-color: white;
+      height: 100%;
+    }
+    .title{
+      font-size: 24px;
+    }
+
+  </style>
+</head>
+<body fullbleed layout vertical>
+
+  <core-drawer-panel touch-action selected="main">
+    <div id="drawer" drawer>
+      <header-content></header-content>
+    </div>
+    <div id="main" main>
+      <main-content></main-content>
+    </div>
+  </core-drawer-panel>
+</body>
+</html>

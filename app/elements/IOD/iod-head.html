@@ -1,0 +1,102 @@
+  <link href="../../bower_components/core-scroll-header-panel/core-scroll-header-panel.html" rel="import">
+  <link rel="import" href="../../bower_components/core-toolbar/core-toolbar.html">
+  <link rel="import" href="../../bower_components/core-menu/core-menu.html">
+  <link rel="import" href="../../bower_components/core-item/core-item.html">
+
+  <polymer-element name="header-content">
+  <template>
+  <style>
+    core-scroll-header-panel {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      background-color: #eee;
+    }
+
+    /* background for toolbar when it is at its full size */
+    core-scroll-header-panel::shadow #headerBg {
+      background-color: green;
+    }
+
+    /* background for toolbar when it is condensed */
+    core-scroll-header-panel::shadow #condensedHeaderBg {
+      background-color: #f4b400;
+    }
+
+    core-toolbar {
+      color: #f1f1f1;
+      fill: #f1f1f1;
+      background-color: transparent;
+    }
+
+    .title {
+      -webkit-transform-origin: 0;
+      transform-origin: 0;
+      font-size: 24px;
+      margin: 0 auto!important;
+      padding-bottom: 20px;
+    }
+
+    .content {
+      padding: 8px;
+    }
+    .pageInfo dl{
+      margin: 0.25em 0;
+    }
+    .pageInfo dd{
+      margin-left: 5px;
+      white-space: normal;
+      font-size: 12px;
+    }
+  </style>
+  <core-scroll-header-panel condenses class="greens">
+    <core-toolbar class="tall">
+      <div class="bottom title indent" style="-webkit-transform: scale(1) translateZ(0px); transform: scale(1) translateZ(0px);">
+      守山ほたる<br/>パーク＆ウォークなび
+      </div>
+    </core-toolbar>
+      <core-menu selected="0" selectedItem="{{item}}">
+        <core-item icon="flag" label="守山水辺百選"on-click="{{onClick1}}"></core-item>
+        <core-item icon="store" label="周辺施設情報"on-click="{{onClick2}}"></core-item>
+      </core-menu>
+      <hr>
+      <core-menu class="pageInfo">
+        <core-item>
+          <dl>
+            <dt>データ提供</dt>
+            <dd><a href="http://opendata.shiga.jp/moriyamahotaru/">守山ほたるパーク＆ウォーク実行委員会</a></dd>
+          </dl>
+        </core-item>
+        <core-item>
+          <dl>
+            <dt>ライセンス<dt>
+          <dd><a href="http://creativecommons.org/licenses/by/4.0/" target="_blank"><img src="http://wp-kyoto.net/opendata/images/ccby.png"></a></dd>
+          </dl>
+        </core-item>
+        <core-item>
+          <dl>
+          <dt>制作</dt>
+          <dd><a href="http://wp-kyoto.net/">ヒデ@WP-kyoto</a></dd>
+          </dl>
+        </core-item>
+      </core-menu>
+  </core-scroll-header-panel>
+
+  </template>
+  <script>
+
+    Polymer('header-content', {
+      onClick1: function() {
+        document.querySelector('main-content').query = 'watersides';
+        document.querySelector('main-content').queryName = "守山水辺百選";
+      },
+      onClick2: function() {
+        document.querySelector('main-content').query = 'attractions';
+        document.querySelector('main-content').queryName = "周辺施設情報";
+      }
+    });
+
+  </script>
+  </polymer-element>
