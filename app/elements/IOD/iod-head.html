@@ -2,6 +2,7 @@
   <link rel="import" href="../../bower_components/core-toolbar/core-toolbar.html">
   <link rel="import" href="../../bower_components/core-menu/core-menu.html">
   <link rel="import" href="../../bower_components/core-item/core-item.html">
+  <link rel="import" href="../../bower_components/paper-ripple/paper-ripple.html">
 
   <polymer-element name="header-content">
   <template>
@@ -58,8 +59,10 @@
       </div>
     </core-toolbar>
       <core-menu selected="0" selectedItem="{{item}}">
-        <core-item icon="flag" label="守山水辺百選"on-click="{{onClick1}}"></core-item>
-        <core-item icon="store" label="周辺施設情報"on-click="{{onClick2}}"></core-item>
+        <core-item icon="flag" label="守山水辺百選"on-click="{{onClick1}}">
+        <paper-ripple fit></paper-ripple></core-item>
+        <core-item icon="store" label="周辺施設情報"on-click="{{onClick2}}">
+        <paper-ripple fit></paper-ripple></core-item>
       </core-menu>
       <hr>
       <core-menu class="pageInfo">
