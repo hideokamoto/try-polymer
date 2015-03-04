@@ -7,6 +7,7 @@
   <link href="../../bower_components/core-icon-button/core-icon-button.html" rel="import">
   <link rel="import" href="../../bower_components/core-toolbar/core-toolbar.html">
   <link rel="import" href="../../bower_components/paper-ripple/paper-ripple.html">
+  <link rel="import" href="../../bower_components/google-map/google-map.html">
 
   <polymer-element name="main-content" attributes="query">
   <template>
@@ -123,6 +124,9 @@
         position: absolute;
         bottom: 20px;
       }
+  google-map {
+    height: 600px;
+  }
     </style>
   <core-ajax url="http://2015.moriyamahotaru.com/category/{{query}}/json/" handleAs="json" auto response="{{items}}"></core-ajax>
   <core-media-query query="max-width: 640px" queryMatches="{{phoneScreen}}"></core-media-query>
@@ -168,9 +172,11 @@
               </div>
               <div class="card-album-artist" style="margin-top:20px">
                 <div>{{selectedAlbum["schema:description"]}}</div>
+                {{selectedAlbum['schema:latitude']}}<br/>{{selectedAlbum['schema:longitude']}}
               </div>
             </div>
           </div>
+          <google-map latitude="{{selectedAlbum['schema:latitude']}}" longitude="{{selectedAlbum['schema:longitude']}}"></google-map>
         </div>
 
       </section>
