@@ -172,11 +172,10 @@
               </div>
               <div class="card-album-artist" style="margin-top:20px">
                 <div>{{selectedAlbum["schema:description"]}}</div>
-                {{selectedAlbum['schema:latitude']}}<br/>{{selectedAlbum['schema:longitude']}}
               </div>
             </div>
           </div>
-          <google-map latitude="{{selectedAlbum['schema:latitude']}}" longitude="{{selectedAlbum['schema:longitude']}}"></google-map>
+          <google-map latitude="{{lat}}" longitude="{{long}}" zoom="15"></google-map>
         </div>
 
       </section>
@@ -200,6 +199,8 @@
         if (this.page === 0 && e.target.templateInstance.model.item) {
           this.selectedAlbum = e.target.templateInstance.model.item;
           this.page = 1;
+          this.lat = +this.selectedAlbum['schema:latitude'][0];
+          this.long = +this.selectedAlbum['schema:longitude'][0];
         } else {
           this.page = 0;
         }
