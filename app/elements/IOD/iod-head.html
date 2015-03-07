@@ -7,6 +7,7 @@
   <polymer-element name="header-content">
   <template>
   <style>
+      @import url(http://fonts.googleapis.com/earlyaccess/notosansjapanese.css);
     core-scroll-header-panel {
       position: absolute;
       top: 0;
@@ -38,6 +39,9 @@
       font-size: 24px;
       margin: 0 auto!important;
       padding-bottom: 20px;
+  font-family: 'Noto Sans Japanese', serif;
+  padding: 0;
+  text-align: right;
     }
 
     .content {
@@ -54,8 +58,12 @@
   </style>
   <core-scroll-header-panel condenses class="greens">
     <core-toolbar class="tall">
-      <div class="bottom title indent" style="-webkit-transform: scale(1) translateZ(0px); transform: scale(1) translateZ(0px);">
-      守山ほたる<br/>パーク＆ウォークなび
+      <div class="middle title indent" style="-webkit-transform: scale(1) translateZ(0px); transform: scale(1) translateZ(0px);">
+      <span style="
+    font-size: 2.50rem;
+    display: block;
+    font-weight: bold;">もりやま</span>
+      <span style="display: block;">パーク＆ウォークなび</span>
       </div>
     </core-toolbar>
       <core-menu selected="0" selectedItem="{{item}}">
