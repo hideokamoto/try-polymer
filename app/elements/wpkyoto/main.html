@@ -1,0 +1,228 @@
+
+  <link rel="import" href="../../bower_components/core-ajax/core-ajax.html">
+  <link href="../../bower_components/core-animated-pages/core-animated-pages.html" rel="import">
+  <link href="../../bower_components/core-image/core-image.html" rel="import">
+  <link href="../../bower_components/core-media-query/core-media-query.html" rel="import">  
+  <link href="../../bower_components/core-scroll-header-panel/core-scroll-header-panel.html" rel="import">
+  <link href="../../bower_components/core-icon-button/core-icon-button.html" rel="import">
+  <link rel="import" href="../../bower_components/core-toolbar/core-toolbar.html">
+  <link rel="import" href="../../bower_components/paper-ripple/paper-ripple.html">
+  <link rel="import" href="../../bower_components/paper-button/paper-button.html">
+
+  <polymer-element name="main-content" attributes="query">
+  <template>
+    <style>
+      .sp-hide{display: none;}
+      .chip-container {
+        position: absolute;
+        top: 10px;
+        right: 0;
+        left: 0;
+        text-align: center;
+      }
+
+      .chip {
+        display: inline-block;
+        position: relative;
+        border-radius: 3px;
+        margin: 4px;
+        overflow: hidden;
+        text-align: start;
+        background-color: #fff;
+        box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.16);
+      }
+      .chip-half{
+        width: 47%;
+      }
+
+      .chip-top {
+        width: 296px;
+        height: 200px;
+        background-size: cover;
+        background-repeat: no-repeat;
+      }
+
+      .chip-bottom {
+        padding: 8px;
+        line-height: 1.5;
+        max-width: 300px;
+        position: absolute;
+        bottom: 0;
+        color: #fff;
+        background: rgba(0,0,0,0.36);
+        box-sizing: border-box;
+        width: 100%;
+      }
+
+      #details {
+        padding: 10px 10% 0;
+      }
+
+      .card {
+        margin-bottom: 40px;
+        border-radius: 3px;
+        text-align: start;
+        overflow: hidden;
+        background: #fff;
+        box-shadow: 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+      }
+
+      .card-left {
+        max-width: 300px;
+        width: 40%;
+      }
+      .card-full{
+        max-width: 100%;
+        width: 100%;
+        min-height: 300px;
+      }
+
+      .card-right {
+        padding: 24px;
+      }
+
+      .card-icon {
+        border-radius: 50%;
+        width: 60px;
+        height: 60px;
+        margin-right: 16px;
+      }
+
+      .card-album-title {
+        font-size: 2em;
+      }
+      .select {
+        display:block;
+        padding:20px 20px;
+      }
+      .select > button{
+        display: inline-block;
+        height: 40px;
+        font-size: 16px;
+        line-height: 1.2;
+        width: 49%;
+        vertical-align: top;
+      }
+      .main{
+        height: 100%;
+        background: #fafafa;
+      }
+      .header{
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: bottom;
+        color: #f1f1f1;
+      }
+      .title{
+        background: rgba(0, 0, 0, 0.15);
+        -webkit-box-shadow: 0 -50px 100px 71px rgba(0, 0, 0, 0.15);
+        -moz-box-shadow: 0 -50px 100px 71px rgba(0, 0, 0, 0.15);
+        -ms-box-shadow: 0 -50px 100px 71px rgba(0, 0, 0, 0.15);
+        -o-box-shadow: 0 -50px 100px 71px rgba(0, 0, 0, 0.15);
+        box-shadow: 0 -50px 100px 71px rgba(0, 0, 0, 0.15);
+        text-shadow: 0px 0px 10px #000;
+        font-size: 30px;
+        position: absolute;
+        bottom: 20px;
+      }
+  google-map {
+    height: 600px;
+  }
+    </style>
+  <core-ajax url="..//wp-json/posts?filter[posts_per_page]=20&filter[order]=DESC{{query}}" handleAs="json" auto response="{{posts}}"></core-ajax>
+  <core-media-query query="max-width: 640px" queryMatches="{{phoneScreen}}"></core-media-query>
+  <core-media-query query="max-width: 1000px" queryMatches="{{largeScreen}}"></core-media-query>
+  <core-scroll-header-panel condenses fix condensedHeaderHeight="40px" class="greens main">
+  <core-toolbar class="header medium-tall" style="background:#7986cb;">
+      <div class="bottom title" style="-webkit-transform: scale(1) translateZ(0px); transform: scale(1) translateZ(0px);">
+      <core-icon-button icon="menu" onclick="document.querySelector('core-drawer-panel').togglePanel();" id="drawer-toggle" class="{{phoneScreen?'':'sp-hide'}}"></core-icon-button>
+      {{queryName}}
+      </div>
+    </core-toolbar>
+
+    <core-animated-pages selected="{{page}}" transitions="hero-transition" on-core-animated-pages-transition-end="{{complete}}">
+
+      <section>
+
+        <div class="chip-container" hero-p on-tap="{{transition}}" >
+          <div horizontal layout wrap around-justified>
+
+          <template repeat="{{post in posts}}">
+
+            <div class="chip {{phoneScreen?'chip-half':''}}" hero-id="{{post.ID}}" hero?="{{selectedAlbum === post }}" self-stretch>
+              <div class="chip-top" style="background-image:url(../wp-content/uploads/{{post.featured_image.attachment_meta.file}});" hero-id="{{post.ID}}" hero?="{{selectedAlbum === post}}"></div>
+              <div class="chip-bottom">
+                <div class="chip-album-title">{{post.title}}</div>
+              </div>
+              <paper-ripple fit></paper-ripple>
+            </div>
+          </template>
+          <div class="chip {{phoneScreen?'chip-half':''}}" style="display:none">
+            <paper-button raised on-click="{{next}}">Next</paper-button>
+          </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="details">
+        <div class="card" layout vertical hero-id="{{selectedAlbum.ID}}" hero>
+          <div layout vertical on-tap="{{transition}}">
+            <core-image class="card-full" src="../wp-content/uploads/{{selectedAlbum.featured_image.attachment_meta.file}}" hero sizing="cover"></core-image>
+            <div class="card-right">
+              <div layout horizontal center>
+                <div flex>
+                  <div class="card-album-title">{{selectedAlbum.title}}</div>
+                </div>
+              </div>
+              <div class="card-album-artist" style="margin-top:20px">
+                {{selectedAlbum.content|encodeEntities}}
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+    </core-animated-pages>
+  </core-scroll-header-panel>
+
+  </template>
+  <script>
+
+    Polymer('main-content', {
+
+      page: 0,
+      query: "",
+      queryName:"新着記事２０件",
+
+      selectedAlbum: null,
+      rand : Math.floor( Math.random() * 10 ),
+
+      transition: function(e) {
+        if (this.page === 0 && e.target.templateInstance.model.post) {
+          this.selectedAlbum = e.target.templateInstance.model.post;
+          this.page = 1;
+        } else {
+          this.page = 0;
+        }
+      },
+      encodeEntities: function(value) {
+        var div = document.createElement('div');
+        div.innerHTML = value;
+        return div.innerHTML;
+      },
+
+      next: function() {
+        if (this.searchQuery) {
+          query = "&filter[s]=" + this.searchQuery;
+          document.querySelector('main-content').queryName = this.queryName + "ページ目";
+        } else {
+          query = "&filter[s]=";
+        }
+        this.query = query;
+      }
+    });
+
+
+  </script>
+  </polymer-element>
