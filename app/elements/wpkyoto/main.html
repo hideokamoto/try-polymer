@@ -175,7 +175,7 @@
                 </div>
               </div>
               <div class="card-album-artist" style="margin-top:20px">
-                {{selectedAlbum.content|encodeEntities}}
+                <html-echo html="{{selectedAlbum.content}}"></html-echo>
               </div>
             </div>
           </div>
@@ -206,11 +206,6 @@
           this.page = 0;
         }
       },
-      encodeEntities: function(value) {
-        var div = document.createElement('div');
-        div.innerHTML = value;
-        return div.innerHTML;
-      },
 
       next: function() {
         if (this.searchQuery) {
@@ -225,4 +220,15 @@
 
 
   </script>
+  </polymer-element>
+
+  <polymer-element name="html-echo" attributes="html">
+    <script>
+      Polymer('html-echo', {
+        htmlChanged: function() {
+          // WARNING: potential XSS vulnerability if `html` comes from an untrusted source
+          this.innerHTML = this.html;
+        }
+      });
+    </script>
   </polymer-element>
